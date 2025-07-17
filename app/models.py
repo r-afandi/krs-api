@@ -47,6 +47,8 @@ class MahasiswaDinus(models.Model):
 
     class Meta:
         db_table = 'mahasiswa_dinus'
+
+
 class MatkulKurikulum(models.Model):
     kdmk = models.CharField(max_length=255,primary_key=True)
     nmmk = models.CharField(max_length=255)
@@ -72,6 +74,34 @@ class Hari(models.Model):
 
     class Meta:
         db_table = 'hari'
+
+from django.db import models
+
+class Ruang(models.Model):
+    nama = models.CharField(max_length=250)
+    nama2 = models.CharField(max_length=250, default='-')
+    id_jenis_makul = models.IntegerField(null=True, blank=True)
+    id_fakultas = models.CharField(max_length=5, null=True, blank=True)
+    kapasitas = models.PositiveSmallIntegerField(default=0)
+    kap_ujian = models.PositiveSmallIntegerField(default=0)
+    
+    # 1: buka, 0: tutup, 2: hapus
+    STATUS_CHOICES = [
+        (0, 'Tutup'),
+        (1, 'Buka'),
+        (2, 'Hapus'),
+    ]
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1)
+    
+    luas = models.CharField(max_length=5, default='0', help_text='meter persegi')
+    kondisi = models.CharField(max_length=50, null=True, blank=True)
+    jumlah = models.PositiveIntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.nama
+
+    class Meta:
+        db_table = 'ruang'
 
 class SesiKuliah(models.Model):
     id = models.AutoField(primary_key=True)
@@ -137,3 +167,24 @@ class DaftarNilai(models.Model):
 
     class Meta:
         db_table = 'daftar_nilai'
+
+class ValidasiKrsMhs(models.Model):
+    id = models.AutoField(primary_key=True)
+    nim_dinus = models.ForeignKey(MahasiswaDinus, on_delete=models.CASCADE, db_column='nim_dinus')
+    job_date = models.DateTimeField(null=True, blank=True)
+    job_host = models.CharField(max_length=255, null=True, blank=True)
+    job_agent = models.CharField(max_length=255, null=True, blank=True)
+    ta = models.ForeignKey(TahunAjaran, on_delete=models.CASCADE, db_column='ta')
+
+    class Meta:
+        db_table = 'validasi_krs_mhs'
+class IPSemester(models.Model):
+    id = models.AutoField(primary_key=True)
+    ta = models.ForeignKey(TahunAjaran, on_delete=models.CASCADE, db_column='ta')
+    nim_dinus = models.ForeignKey(MahasiswaDinus, on_delete=models.CASCADE, db_column='nim_dinus')
+    sks = models.IntegerField()
+    ips = models.CharField(max_length=5)
+    last_update = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'ip_semester'

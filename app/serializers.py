@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from app.models import MahasiswaDinus, MatkulKurikulum, Hari, JadwalTawar, SesiKuliah, TahunAjaran, KrsRecord
+from app.models import MahasiswaDinus, MatkulKurikulum, Hari, JadwalTawar, SesiKuliah, TahunAjaran, KrsRecord,ValidasiKrsMhs,IPSemester
 
 class MahasiswaDinusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,4 +47,12 @@ class KrsRecordSerializer(serializers.ModelSerializer):
         model = KrsRecord
         fields = ['ta', 'kdmk', 'id_jadwal', 'nim_dinus', 'sts', 'sks', 'modul']
         depth = 1
+        extra_kwargs = {
+            'id': {'read_only': True},  # Ini penting
+        }
+
+class KrsStatusSerializer(serializers.Serializer):
+    validated = serializers.BooleanField()
+    total_sks = serializers.IntegerField()
+    ips_last_semester = serializers.CharField(allow_null=True)
 
