@@ -19,7 +19,7 @@ Sebuah REST API untuk sistem pengelolaan Kartu Rencana Studi (KRS) mahasiswa ber
 - **Python 3.12**
 - **Django 5.2.4**
 - **Django REST Framework**
-- **PostgreSQL (disarankan)**
+- **MySQL (disarankan)**
 - **Pytest + APIClient** untuk pengujian otomatis
 
 ---
@@ -58,10 +58,9 @@ pip install -r requirements.txt
 
 ### 4. Migrasi Database (WINDOWS)
 ```bash
-python manage.py migrate
-python manage.py seed_krs_data
 python manage.py makemigration
 python manage.py migrate
+python manage.py seed_krs_data
 ```
 
 ### 5. Jalankan Server
@@ -78,9 +77,8 @@ pytest -s
 ```
 
 Contoh hasil output:
-```
-================================================= 1 passed in 13.17s ==================================================
-```
+
+`================================================= 1 passed in 13.17s ==================================================`
 
 ---
 
